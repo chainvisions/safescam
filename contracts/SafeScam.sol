@@ -12,7 +12,7 @@ import "@openzeppelin/contracts/token/ERC20/SafeERC20.sol";
 *
 *
 *
-* === WHY? ===
+* == WHY? ==
 *
 * It's been a quiet, boring Saturday night so I have decided, "why not write some token contract for fun?".
 *
@@ -20,7 +20,7 @@ import "@openzeppelin/contracts/token/ERC20/SafeERC20.sol";
 *
 * == SYSTEM EXPLANATION ==
 *
-* SafeScam is ponzinomics taken to a level of extremity. It is a rebase token that anyone can mint and it 
+* SafeScam is ponzinomics taken to a level of extremity. It is a useless token that anyone can mint and it 
 * can be redeemed for BUSD held by the SafeScam contract. To mint SafeScam, you can call `claim()` on the contract.
 * You will be minted SSCAM proportional to your BELUGA holdings, hold 1 BELUGA, get 1 SSCAM. A total of 1k SSCAM can
 * be minted through claiming. Now you may be asking one question "Can't this be sybiled" and you are very correct. This
