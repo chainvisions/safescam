@@ -46,7 +46,9 @@ contract SafeScam is Ownable, ERC20, ERC20Detailed {
     mapping(address => bool) public claimed;
     event Claim(address indexed user, uint256 indexed balance);
 
-    constructor() public ERC20Detailed("SafeScam", "SSCAM", 18) {
+    constructor(address _beluga, address _rewardToken) public ERC20Detailed("SafeScam", "SSCAM", 18) {
+        beluga = _beluga;
+        rewardToken = _rewardToken;
         _mint(address(this), airdropReserves);
     }
 
