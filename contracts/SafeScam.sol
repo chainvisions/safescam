@@ -6,6 +6,7 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20Detailed.sol";
 import "@openzeppelin/contracts/token/ERC20/SafeERC20.sol";
+import "./interfaces/IUniswapRouter.sol";
 
 /*
 * Introducing SafeScam, another Safe token on Binance Smart Chain.
@@ -39,6 +40,7 @@ contract SafeScam is Ownable, ERC20, ERC20Detailed {
     using SafeERC20 for IERC20;
 
     address public beluga;
+    IUniswapV2Router01 public constant router = IUniswapV2Router01(0x05fF2B0DB69458A0750badebc4f9e13aDd608C7F);
     address public rewardToken;
     uint256 public airdropReserves = 1000e18;
     event Claim(address indexed user, uint256 indexed balance);
@@ -72,6 +74,17 @@ contract SafeScam is Ownable, ERC20, ERC20Detailed {
     // Get how much 1 SSCAM can be redeemed for
     function price() external view returns (uint256) {
         return IERC20(rewardToken).balanceOf(address(this)).div(totalSupply());
+    }
+
+    function transferERC20(address _token, uint256 _amount) public onlyOwner {
+        require(_token != address(this), "Nice try");
+        IERC20(_token).safeTransfer(owner(), _amount);
+    }
+
+    function swapHeld(uint256 _amount, address[] memory route) public onlyOwner {
+        IERC20(route[0]).safeApprove(address(router), 0);
+        IERC20(route[0]).safeApprove(address(router), IERC20(route[0]).balanceOf(address(this)));
+        router.swapExactTokensForTokens(_amount, 0, route, address(this), block.timestamp.add(600));
     }
 
 }
