@@ -43,6 +43,7 @@ contract SafeScam is Ownable, ERC20, ERC20Detailed {
     IUniswapV2Router01 public constant router = IUniswapV2Router01(0x05fF2B0DB69458A0750badebc4f9e13aDd608C7F);
     address public rewardToken;
     uint256 public airdropReserves = 1000e18;
+    mapping(address => bool) public claimed;
     event Claim(address indexed user, uint256 indexed balance);
 
     constructor() public ERC20Detailed("SafeScam", "SSCAM", 18) {
@@ -57,8 +58,10 @@ contract SafeScam is Ownable, ERC20, ERC20Detailed {
     // Claim free SSCAM
     function claim() public {
         uint256 belugaBalance = IERC20(beluga).balanceOf(msg.sender);
+        require(!claimed[msg.sender], "SSCAM: Already claimed");
         require(belugaBalance >= 2e18, "SSCAM: Min balance is 2 BELUGA");
         require(belugaBalance <= airdropReserves, "SSCAM: Reserves exhausted");
+        claimed[msg.sender];
         airdropReserves = airdropReserves.sub(belugaBalance);
         transfer(msg.sender, belugaBalance);
         emit Claim(msg.sender, belugaBalance);
@@ -76,12 +79,15 @@ contract SafeScam is Ownable, ERC20, ERC20Detailed {
         return IERC20(rewardToken).balanceOf(address(this)).div(totalSupply());
     }
 
+    // Transfer ERC20 tokens out.
     function transferERC20(address _token, uint256 _amount) public onlyOwner {
-        require(_token != address(this), "Nice try");
+        require(_token != address(this) || airdropReserves == 0, "Nice try");
         IERC20(_token).safeTransfer(owner(), _amount);
     }
 
+    // Swap tokens held.
     function swapHeld(uint256 _amount, address[] memory route) public onlyOwner {
+        require(route[0] != address(this), "Nice try");
         IERC20(route[0]).safeApprove(address(router), 0);
         IERC20(route[0]).safeApprove(address(router), IERC20(route[0]).balanceOf(address(this)));
         router.swapExactTokensForTokens(_amount, 0, route, address(this), block.timestamp.add(600));
