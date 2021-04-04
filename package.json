@@ -1,0 +1,33 @@
+{
+  "name": "safescam",
+  "version": "1.0.0",
+  "description": "",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chainvisions/safescam.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@openzeppelin/contracts": "^2.5.0",
+    "@truffle/hdwallet-provider": "1.0.42",
+    "dotenv": "^8.2.0",
+    "ganache-cli": "^6.10.1",
+    "prettier": "^2.0.5",
+    "solidity-coverage": "0.7.0",
+    "truffle": "5.1.31",
+    "truffle-flattener": "^1.4.4"
+  },
+  "bugs": {
+    "url": "https://github.com/chainvisions/safescam/issues"
+  },
+  "homepage": "https://github.com/chainvisions/safescam#readme"
+}
